@@ -1,13 +1,13 @@
 import LoginPage from '../pageobjects/login.page.js'
 import { browser } from '@wdio/globals'
 
-describe('Login with invalid password', () => {
-    it('should enter valid login into "login" field', async () => {
+describe('Login with invalid login', () => {
+    it('should enter invalid login into "login" field', async () => {
         await LoginPage.open();
-        await LoginPage.loginUsername('standard_user');
+        await LoginPage.loginUsername('standarD_user');
     })
-    it('should enter invalid password into "password" field, data is represented as dots', async () => {
-        await LoginPage.loginPassword('s3cret_s4uce');
+    it('should enter valid password into "password" field, data is represented as dots', async () => {
+        await LoginPage.loginPassword('secret_sauce');
         await browser.pause(1000);
     })
     it('should on click display "X" icons, highlight fields with red and display error message', async () => {
