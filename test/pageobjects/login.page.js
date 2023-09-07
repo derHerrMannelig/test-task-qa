@@ -36,6 +36,21 @@ class LoginPage extends Page {
     async loginClick (){
         await this.btnSubmit.click();
     }
+    async loginError (){
+        // console check of error icons
+        const icons = await $('svg.error_icon');
+        let iconsDisplayed = await icons.isDisplayed();
+        console.log(`"X" icons are displayed on the "Login" and "Password" fields: ${iconsDisplayed}`);
+        // console check of highlights
+        const highlight = await $('input.input_error.error');
+        let highlightExist = await highlight.isExisting();
+        console.log(`Red highlights are applied to text fields: ${highlightExist}`);
+        // strict check of error message
+        const error = await $('h3[data-test="error"]');
+        let errorText = await error.getText();
+        assert.strictEqual(errorText, 'Epic sadface: Username and password do not match any user in this service');
+        console.log(`Error message: ${errorText}`);
+    }
 
     open () {
         return super.open('');
