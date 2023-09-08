@@ -2,8 +2,11 @@ import LoginPage from '../pageobjects/login.page.js'
 import { browser } from '@wdio/globals'
 
 describe('Login with invalid login', () => {
-    it('should enter invalid login into "login" field', async () => {
+    before(async () =>{
         await LoginPage.open();
+        console.log(`User is on the login page: ${await browser.getUrl()}`)
+    })
+    it('should enter invalid login into "login" field', async () => {
         await LoginPage.loginUsername('standarD_user');
     })
     it('should enter valid password into "password" field, data is represented as dots', async () => {
