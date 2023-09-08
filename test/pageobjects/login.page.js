@@ -53,15 +53,23 @@ class LoginPage extends Page {
     }
     async loginError (){
         // check of error icons
-        const icons = await $('svg.error_icon');
-        let iconsDisplayed = await icons.isDisplayed();
+        const icons = await $$('svg.error_icon');
+        let iconsDisplayed = true;
+        for (const icon of icons) {
+            let iconDisplayed = await icon.isDisplayed();
+            iconsDisplayed = iconsDisplayed && iconDisplayed;
+        }
         assert.strictEqual(iconsDisplayed, true);
         console.log(`"X" icons are displayed on the "Login" and "Password" fields: ${iconsDisplayed}`);
         // check of highlights
-        const highlight = await $('input.input_error.error');
-        let highlightExist = await highlight.isExisting();
-        assert.strictEqual(highlightExist, true);
-        console.log(`Red highlights are applied to text fields: ${highlightExist}`);
+        const highlights = await $$('input.input_error.error');
+        let highlightsExist = true;
+        for (const highlight of highlights) {
+            let highlightExist = await highlight.isExisting();
+            highlightsExist = highlightsExist && highlightExist;
+        }
+        assert.strictEqual(highlightsExist, true);
+        console.log(`Red highlights are applied to text fields: ${highlightsExist}`);
         // check of error message
         const error = await $('h3[data-test="error"]');
         let errorText = await error.getText();
