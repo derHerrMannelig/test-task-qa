@@ -1,7 +1,6 @@
 import LoginPage from '../pageobjects/login.page.js'
 import InventoryPage from '../pageobjects/inventory.page.js'
 import { browser } from '@wdio/globals'
-import inventoryPage from '../pageobjects/inventory.page.js'
 
 describe('Saving the cart after logout', () => {
     before(async () =>{
@@ -32,8 +31,8 @@ describe('Saving the cart after logout', () => {
         await browser.pause(1000);
     })
     it('should click on the "cart" button and redirect to cart page, item should be the same as it was added', async () => {
-        await inventoryPage.cartClick();
-        await inventoryPage.verifyItem();
+        await InventoryPage.cartClick();
+        await InventoryPage.verifyItem();
         await browser.pause(1000);
     })
 })
