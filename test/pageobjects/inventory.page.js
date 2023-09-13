@@ -44,6 +44,15 @@ class InventoryPage extends Page {
     get btnHiLo () {
         return $('option[value="hilo"]')
     }
+    get icnTwitter () {
+        return $('a[href="https://twitter.com/saucelabs"]')
+    }
+    get icnFacebook () {
+        return $('a[href="https://www.facebook.com/saucelabs"]')
+    }
+    get icnLinkedin () {
+        return $('a[href="https://www.linkedin.com/company/sauce-labs/"]')
+    }
 
     async burgerClick (){
         await this.btnBurger.click();
@@ -194,6 +203,43 @@ class InventoryPage extends Page {
         } else {
             throw new Error("Specify correct sorting option! ('low-high' or 'high-low')");
         }
+    }
+    async socialRedirect (icon) {
+        const main = await browser.getUrl();
+        const social = await $('ul.social');
+        await social.scrollIntoView({ block: 'center', inline: 'center' });
+        await browser.pause(500);
+        if (icon === 'Twitter') {
+            let redirect = await this.icnTwitter.getAttribute('href');
+            await this.icnTwitter.click()
+            await browser.pause(1000)
+            // if switch to new window happens, then social network was opened in the new tab
+            await browser.switchWindow(redirect);
+            assert.strictEqual(await browser.getUrl(), redirect)
+            console.log(`Opened in new tab: ${redirect}`);
+        } else if (icon === 'Facebook') {
+            let redirect = await this.icnFacebook.getAttribute('href');
+            await this.icnFacebook.click()
+            await browser.pause(1000)
+            await browser.switchWindow(redirect);
+            assert.strictEqual(await browser.getUrl(), redirect)
+            console.log(`Opened in new tab: ${redirect}`);
+        } else if (icon === 'Linkedin') {
+            let redirect = await this.icnLinkedin.getAttribute('href');
+            await this.icnLinkedin.click()
+            await browser.pause(1000)
+            await browser.switchWindow(redirect);
+            assert.strictEqual(await browser.getUrl(), redirect)
+            console.log(`Opened in new tab: ${redirect}`);
+        } else {
+            throw new Error("Specify correct social network! ('Twitter', 'Facebook', 'Linkedin')")
+        }
+        await browser.pause(1000);
+        // if switch to former window happens, then social network was opened in the new tab
+        await browser.switchWindow(main);
+        assert.strictEqual(await browser.getUrl(), main)
+        console.log(`Returned to: ${main}`);
+        await browser.pause(500);
     }
 }
 
