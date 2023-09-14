@@ -131,11 +131,17 @@ class InventoryPage extends Page {
         // check if item in cart corresponds to chosen before
         const itemPending = await $('div.inventory_item_name');
         const pricePending = await $('div.inventory_item_price');
-        let itemPendingName = await itemPending.getText();
-        let itemPendingPrice = await pricePending.getText();
-        assert.strictEqual(itemPendingName, this.invItem);
-        assert.strictEqual(itemPendingPrice, this.invPrice);
-        console.log(`Item is the same: ${itemPendingName}, ${itemPendingPrice}`);
+        if (await itemPending.isExisting() === true && await pricePending.isExisting() === true) {
+            let itemPendingName = await itemPending.getText();
+            let itemPendingPrice = await pricePending.getText();
+            assert.strictEqual(itemPendingName, this.invItem);
+            assert.strictEqual(itemPendingPrice, this.invPrice);
+            console.log(`Item is the same: ${itemPendingName}, ${itemPendingPrice}`);
+        } else {
+            assert.strictEqual(undefined, this.invItem);
+            assert.strictEqual(undefined, this.invPrice);
+            console.log(`Cart is empty!`);
+        }
     }
     async sortClick () {
         await this.btnSort.click();
@@ -257,9 +263,28 @@ class InventoryPage extends Page {
     }
     async checkoutClick () {
         await this.btnCheckout.click();
+    }
+    async checkoutValid () {
         const checkoutForm = $('div.checkout_info_wrapper > form');
         assert.strictEqual(await checkoutForm.isDisplayed(), true);
         console.log(`Redirected to: ${await browser.getUrl()}`);
+    }
+    async checkoutInvalid () {
+        // check of current webpage
+        const page = await browser.getUrl();
+        assert.strictEqual(page, 'https://www.saucedemo.com/cart.html');
+        console.log(`Checkout unsuccessful, items are not chosen. User is on the cart page: ${page}`);
+        // check of error message
+        const errorMsg = 'Cart is empty';
+        const findMsg = await browser.execute(function(errorMsg) {
+            const findMsg = document.body.innerText;
+            return findMsg.includes(errorMsg)
+        }, errorMsg);
+        if (findMsg) {
+            console.log(`Error message found on page.`);
+        } else {
+            throw new Error(`Error message doesn't display!`);
+        }
     }
 }
 

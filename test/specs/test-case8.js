@@ -23,6 +23,7 @@ describe('Valid Checkout', () => {
     })
     it('should click on the "checkout" button and redirect to checkout page, checkout form is displayed', async () => {
         await InventoryPage.checkoutClick();
+        await InventoryPage.checkoutValid();
         await browser.pause(500);
     })
     it('should enter valid first name into "First Name" field', async () => {
