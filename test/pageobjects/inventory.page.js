@@ -9,6 +9,7 @@ class InventoryPage extends Page {
     constructor () {
         super();
         this.invItem;
+        this.invPrice;
     }
 
     get btnBurger () {
@@ -22,6 +23,9 @@ class InventoryPage extends Page {
     }
     get btnAddToCart () {
         return $$('button.btn.btn_primary.btn_small.btn_inventory')
+    }
+    get btnCheckout () {
+        return $('button[id="checkout"]')
     }
     get inventoryItems () {
         return $$('div.inventory_item_name')
@@ -96,18 +100,25 @@ class InventoryPage extends Page {
         await btns[randItem].scrollIntoView({ block: 'center', inline: 'center' });
         await btns[randItem].click();
         this.invItem = await this.inventoryItems[randItem].getText();
-        console.log(`Button clicked: ${randItem + 1}. This is: ${this.invItem}`)
+        this.invPrice = await this.inventoryPrices[randItem].getText();
+        console.log(`Button clicked: ${randItem + 1}. This is: ${this.invItem}, item price: ${this.invPrice}`)
         await browser.pause(500);
     }
 
     async cartSvg (itemNumber) {
         // check of number of items displayed near cart svg
         const svg = await $('span.shopping_cart_badge');
-        await svg.scrollIntoView({ block: 'center', inline: 'center' });
-        await browser.pause(500);
-        let boughtItems = await svg.getText();
-        assert.strictEqual(boughtItems, `${itemNumber}`);
-        console.log(`Item is added to the cart, quantity: ${boughtItems}`);
+        // != instead of !==, as check for any falsy value
+        if (await svg.isExisting() === true && itemNumber != undefined) {
+            await svg.scrollIntoView({ block: 'center', inline: 'center' });
+            await browser.pause(500);
+            let boughtItems = await svg.getText();
+            assert.strictEqual(boughtItems, `${itemNumber}`);
+            console.log(`Item is added to the cart, quantity: ${boughtItems}`);
+        } else {
+            assert.strictEqual(await svg.isExisting(), false);
+            console.log(`Cart is empty!`);
+        }
     }
     async cartClick () {
         await this.btnCart.click();
@@ -119,9 +130,12 @@ class InventoryPage extends Page {
     async verifyItem () {
         // check if item in cart corresponds to chosen before
         const itemPending = await $('div.inventory_item_name');
+        const pricePending = await $('div.inventory_item_price');
         let itemPendingName = await itemPending.getText();
+        let itemPendingPrice = await pricePending.getText();
         assert.strictEqual(itemPendingName, this.invItem);
-        console.log(`Item is the same: ${itemPendingName}`);
+        assert.strictEqual(itemPendingPrice, this.invPrice);
+        console.log(`Item is the same: ${itemPendingName}, ${itemPendingPrice}`);
     }
     async sortClick () {
         await this.btnSort.click();
@@ -240,6 +254,12 @@ class InventoryPage extends Page {
         assert.strictEqual(await browser.getUrl(), main)
         console.log(`Returned to: ${main}`);
         await browser.pause(500);
+    }
+    async checkoutClick () {
+        await this.btnCheckout.click();
+        const checkoutForm = $('div.checkout_info_wrapper > form');
+        assert.strictEqual(await checkoutForm.isDisplayed(), true);
+        console.log(`Redirected to: ${await browser.getUrl()}`);
     }
 }
 
