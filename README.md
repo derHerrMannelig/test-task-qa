@@ -5,6 +5,8 @@ This is completed QA test task. All original 9 test cases are automated + create
 **Test execution states (original + bonus):** [drive.google.com](https://drive.google.com/drive/folders/18cHhHZqm-bD0AMXwOfM7cnaKUiEoJ366)  
 ## Setup:  
 1. Clone this repo;  
-2. In terminal, enter `npm run wdio` to launch all test cases, or `npm run wdio -- --spec test-caseX.js`/`npm run wdio -- --spec test-case-bonusX.js` to launch specific ones.  
+2. Execute `npm install` in terminal;  
+3. In terminal, enter `npm run wdio` to launch all test cases, or `npm run wdio -- --spec test-caseX.js`/`npm run wdio -- --spec test-case-bonusX.js` to launch specific ones.  
 ## Known issues:  
 As it stated in the test execution states, `test-case9.js` and `test-case-bonus4.js` will fail. For details, refer to execution states.  
+It's recommended to launch specific tests on low-end PCs/laptops instead of all at once, because some of them may not pass correctly due to timeouts/pauses and CPU/RAM load.  
