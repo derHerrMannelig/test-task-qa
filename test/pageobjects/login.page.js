@@ -51,7 +51,7 @@ class LoginPage extends Page {
         assert.strictEqual(cartDisplayed, true);
         console.log(`Products are displayed: ${productsDisplayed}\nCart is displayed: ${cartDisplayed}`);
     }
-    async loginError (){
+    async loginError (errorMsgText){
         // check of error icons
         const icons = await $$('svg.error_icon');
         let iconsDisplayed = true;
@@ -73,7 +73,7 @@ class LoginPage extends Page {
         // check of error message
         const error = await $('h3[data-test="error"]');
         let errorText = await error.getText();
-        assert.strictEqual(errorText, 'Epic sadface: Username and password do not match any user in this service');
+        assert.strictEqual(errorText, `Epic sadface: ${errorMsgText}`);
         console.log(`Error message: ${errorText}`);
     }
     async screenshot (name) {

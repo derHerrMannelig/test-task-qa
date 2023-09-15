@@ -15,7 +15,7 @@ describe('Login with invalid password', () => {
     })
     it('should on click display "X" icons, highlight fields with red and display error message', async () => {
         await LoginPage.loginClick();
-        await LoginPage.loginError();
+        await LoginPage.loginError('Username and password do not match any user in this service');
         await browser.pause(1000);
     })
 })
