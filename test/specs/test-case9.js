@@ -21,6 +21,7 @@ describe('Checkout without items', () => {
     it('should click on the "checkout" button, user is left on the cart page, error message "Cart is empty" is displayed', async () => {
         await InventoryPage.checkoutClick();
         await browser.pause(1000);
+        await LoginPage.screenshot('test-case9-fail.png');
         await InventoryPage.checkoutInvalid();
     })
 })

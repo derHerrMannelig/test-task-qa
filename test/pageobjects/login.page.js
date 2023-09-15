@@ -76,6 +76,9 @@ class LoginPage extends Page {
         assert.strictEqual(errorText, 'Epic sadface: Username and password do not match any user in this service');
         console.log(`Error message: ${errorText}`);
     }
+    async screenshot (name) {
+        await $('body').saveScreenshot(name);
+    }
 
     open () {
         return super.open('');

@@ -275,16 +275,9 @@ class InventoryPage extends Page {
         assert.strictEqual(page, 'https://www.saucedemo.com/cart.html');
         console.log(`Checkout unsuccessful, items are not chosen. User is on the cart page: ${page}`);
         // check of error message
-        const errorMsg = 'Cart is empty';
-        const findMsg = await browser.execute(function(errorMsg) {
-            const findMsg = document.body.innerText;
-            return findMsg.includes(errorMsg)
-        }, errorMsg);
-        if (findMsg) {
-            console.log(`Error message found on page.`);
-        } else {
-            throw new Error(`Error message doesn't display!`);
-        }
+        const error = await $("//*[contains(text(),'Cart is empty')]");
+        assert.strictEqual(await error.isDisplayed(), true);
+        console.log(`Error message: ${await error.getText()}`);
     }
 }
 
