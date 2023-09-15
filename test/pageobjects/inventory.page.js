@@ -1,6 +1,6 @@
 import { $ } from '@wdio/globals'
 import Page from './page.js'
-import loginPage from './login.page.js'
+import LoginPage from './login.page.js'
 import { browser } from '@wdio/globals'
 import assert from 'node:assert'
 
@@ -86,9 +86,9 @@ class InventoryPage extends Page {
         assert.strictEqual(page, 'https://www.saucedemo.com/');
         console.log(`Redirected to: ${page}`);
         // check of username and password fields
-        const login = await loginPage.inputUsername.getValue();
+        const login = await LoginPage.inputUsername.getValue();
         assert.strictEqual(login, '');
-        const pass = await loginPage.inputPassword.getValue();
+        const pass = await LoginPage.inputPassword.getValue();
         assert.strictEqual(pass, '');
         console.log('Username and password fields are empty.');
     }
@@ -96,7 +96,7 @@ class InventoryPage extends Page {
     async anyAddToCart (){
         // random choice of item
         const btns = await this.btnAddToCart;
-        var randItem = Math.floor(Math.random() * btns.length);
+        let randItem = Math.floor(Math.random() * btns.length);
         await btns[randItem].scrollIntoView({ block: 'center', inline: 'center' });
         await btns[randItem].click();
         this.invItem = await this.inventoryItems[randItem].getText();
